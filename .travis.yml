@@ -1,0 +1,18 @@
+language: cpp
+script:   
+- cmake -H. -B_build
+- cmake --build _build
+- cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install
+- cmake --build _build --target install
+- mkdir artifacts && cd artifacts
+- echo "text1 text2 text3" | ../_install/bin/demo
+- test -f default.log 
+- mkdir -p ${HOME}/.config
+- echo "output=config.log" > ${HOME}/.config/demo.cfg
+- echo "text1 text2 text3" | ../_install/bin/demo
+- test -f config.log 
+- export DEMO_OUTPUT=env.log
+- echo "text1 text2 text3" | ../_install/bin/demo
+- test -f env.log 
+- echo "text1 text2 text3" | ../_install/bin/demo --output arg.log
+- test -f arg.log 
